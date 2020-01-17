@@ -1,10 +1,9 @@
-import axios from "axios";
-
 export const SET_PORT = "SET_PORT";
 export const SET_ENDPOINT = "SET_ENDPOINT";
 export const SET_HEADER = "SET_HEADER";
 export const SET_BODY = "SET_BODY";
 export const SET_METHOD = "SET_METHOD";
+export const SET_RESPONSE = "SET_RESPONSE";
 
 export const setPort = port => {
   return {
@@ -17,8 +16,8 @@ export const setMethod = method => {
   return {
     type: SET_METHOD,
     payload: method
-  }
-}
+  };
+};
 
 export const setEndpoint = endpoint => {
   return {
@@ -38,5 +37,12 @@ export const setBody = body => {
   return {
     type: SET_BODY,
     payload: body
+  };
+};
+
+export const setResponse = data => {
+  return {
+    type: SET_RESPONSE,
+    payload: data
   };
 };

@@ -3,15 +3,17 @@ import {
   SET_METHOD,
   SET_ENDPOINT,
   SET_HEADER,
-  SET_BODY
+  SET_BODY,
+  SET_RESPONSE
 } from "../Actions/actions";
 
 const initialState = {
-  port: "3333",
+  port: "5000",
   method: "get",
-  endpoint: "/",
-  header: "",
-  body: ""
+  endpoint: "",
+  header: "{}",
+  body: "{}",
+  response: "{}"
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         body: action.payload
+      };
+      case SET_RESPONSE:
+      return {
+        ...state,
+        response: action.payload
       };
     default:
       return state;

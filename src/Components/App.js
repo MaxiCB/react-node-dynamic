@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { Container, Col, Row, Button, Label } from "reactstrap";
 
+import axios from "axios";
 import { connect } from "react-redux";
-import { setPort, setEndpoint, setHeader, setBody, setMethod } from "../Actions/actions";
+import { setPort, setEndpoint, setHeader, setBody, setMethod, setResponse } from "../Actions/actions";
 // Components
 import InputBar from "./InputBar";
 import ResponseCard from "./ResponseCard";
 import ButtonInput from "./ButtonInput";
 
 const App = props => {
+
+  let data;
 
   const setPort = port => {
     props.setPort(port);
@@ -30,6 +33,25 @@ const App = props => {
     props.setBody(body);
   }
 
+  const setResponse = data => {
+    props.setResponse(data);
+  }
+
+  const request = () => {
+    axios({
+      method: props.method,
+      url: `http://localhost:${props.port}/${props.endpoint}`,
+      data: JSON.parse(props.body),
+      headers: JSON.parse(props.header)
+    })
+    .then(res => {
+      setResponse(res.data);
+    })
+    .catch(err => {
+      setResponse(err)
+    })
+  }
+
   return (
     <Container className="App">
       <Row>
@@ -46,12 +68,14 @@ const App = props => {
       </Row>
       <Row>
         <Col>
-          <Button color="primary" onClick={e => console.log(props)}>Send</Button>
+          <Button color="primary" onClick={e => {
+            request()
+            }}>Send</Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <ResponseCard/>
+          <ResponseCard data={props.response}/>
         </Col>
       </Row>
     </Container>
@@ -64,8 +88,9 @@ const mapStateToProps = state => {
     method: state.method,
     endpoint: state.endpoint,
     header: state.header,
-    body: state.header
+    body: state.header,
+    response: state.response
   }
 }
 
-export default connect(mapStateToProps, {setPort, setEndpoint, setHeader, setBody, setMethod})(App);
+export default connect(mapStateToProps, {setPort, setEndpoint, setHeader, setBody, setMethod, setResponse})(App);
